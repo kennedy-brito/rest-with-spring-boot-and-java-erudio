@@ -1,5 +1,7 @@
 package com.kennedy.rest_with_spring_boot_and_java_erudio.services;
+import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.PersonVO;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.exceptions.ResourceNotFoundException;
+import com.kennedy.rest_with_spring_boot_and_java_erudio.mapper.Mapper;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.model.Person;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.repositories.PersonRepository;
 import org.slf4j.Logger;
@@ -7,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class PersonService {
@@ -19,23 +19,31 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
-    public Person create(Person person){
+    public PersonVO create(PersonVO person){
 
         logger.info("Creating one person!");
+        Person entity = Mapper.parseObject(person, Person.class);
+        entity = personRepository.save(entity);
 
-        return personRepository.save(person);
+        PersonVO vo = Mapper.parseObject(entity, PersonVO.class);
+
+        return vo;
     }
 
-    public Person update(Person person){
+    public PersonVO update(PersonVO person){
 
         logger.info("Updating one person!");
 
-        Person entity = this.findById(person.getId());
+        Person entity = personRepository.findById(person.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("No records found for this ID!")
+        );
 
         entity.setFirstName(person.getFirstName());
         entity.setLastName(person.getLastName());
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
+
+        PersonVO vo = Mapper.parseObject(personRepository.save(entity), PersonVO.class);
 
         return person;
     }
@@ -44,26 +52,30 @@ public class PersonService {
 
         logger.info("Deleting one person!");
 
-        Person entity = this.findById(id);
+        Person entity = personRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("No records found for this ID!")
+        );
 
         personRepository.delete(entity);
     }
 
-    public Person findById(Long id){
+    public PersonVO findById(Long id){
 
         logger.info("Finding one person!");
 
-        return personRepository.findById(id).orElseThrow(
+        Person entity = personRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("No records found for this ID!")
         );
+
+        return Mapper.parseObject(entity, PersonVO.class);
     }
 
-    public List<Person> findAll(){
+    public List<PersonVO> findAll(){
 
         List<Person> persons = personRepository.findAll();
         logger.info("Finding all people!");
 
-        return persons;
+        return Mapper.parseListObjects(persons, PersonVO.class);
     }
 
 }
