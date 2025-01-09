@@ -22,4 +22,11 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleNotFoundExceptions(ResourceNotFoundException ex, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                request.getDescription(false), ex.getMessage(), new Date()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+    }
 }
