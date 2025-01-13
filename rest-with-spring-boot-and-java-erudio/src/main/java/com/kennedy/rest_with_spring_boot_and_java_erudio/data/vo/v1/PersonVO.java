@@ -1,13 +1,19 @@
 package com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@JsonPropertyOrder({"id", "firstName", "lastName", "gender", "address"})
 public class PersonVO implements Serializable {
 
     private Long id;
 
+    @JsonProperty("first_name")
     private String firstName;
+    @JsonProperty("last_name")
     private String lastName;
     private String address;
     private String gender;
