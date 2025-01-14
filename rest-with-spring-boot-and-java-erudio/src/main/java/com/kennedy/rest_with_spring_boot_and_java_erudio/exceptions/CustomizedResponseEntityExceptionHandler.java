@@ -29,4 +29,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
     }
+
+    @ExceptionHandler(RequiredObjectIsNullException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(RequiredObjectIsNullException ex, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                request.getDescription(false), ex.getMessage(), new Date()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
 }

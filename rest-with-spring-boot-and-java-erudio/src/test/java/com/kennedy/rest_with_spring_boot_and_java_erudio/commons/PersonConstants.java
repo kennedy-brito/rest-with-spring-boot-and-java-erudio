@@ -15,7 +15,7 @@ public class PersonConstants {
         List<Person> list = new ArrayList<>();
 
         for (int i = 0; i < 10; i++){
-            Person person = new Person(Long.valueOf(i), "name " + i, "last name " + i, "address " + i, "male");
+            Person person = new Person((long) i, "name " + i, "last name " + i, "address " + i, "male");
             list.add(person);
         }
 

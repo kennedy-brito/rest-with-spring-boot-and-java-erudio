@@ -15,7 +15,7 @@ public class MapperTest {
 
         PersonVO vo = Mapper.parseObject(p1, PersonVO.class);
 
-        assertThat(vo.getId()).isEqualTo(p1.getId());
+        assertThat(vo.getKey()).isEqualTo(p1.getId());
         assertThat(vo.getFirstName()).isEqualTo(p1.getFirstName());
         assertThat(vo.getLastName()).isEqualTo(p1.getLastName());
         assertThat(vo.getAddress()).isEqualTo(p1.getAddress());
@@ -27,7 +27,7 @@ public class MapperTest {
 
         Person p1 = Mapper.parseObject(vo1, Person.class);
 
-        assertThat(vo1.getId()).isEqualTo(p1.getId());
+        assertThat(vo1.getKey()).isEqualTo(p1.getId());
         assertThat(vo1.getFirstName()).isEqualTo(p1.getFirstName());
         assertThat(vo1.getLastName()).isEqualTo(p1.getLastName());
         assertThat(vo1.getAddress()).isEqualTo(p1.getAddress());
@@ -41,7 +41,7 @@ public class MapperTest {
                 (p) -> {
                     PersonVO vo = Mapper.parseObject(p, PersonVO.class);
 
-                    assertThat(vo.getId()).isEqualTo(p.getId());
+                    assertThat(vo.getKey()).isEqualTo(p.getId());
                     assertThat(vo.getFirstName()).isEqualTo(p.getFirstName());
                     assertThat(vo.getLastName()).isEqualTo(p.getLastName());
                     assertThat(vo.getAddress()).isEqualTo(p.getAddress());
@@ -56,7 +56,7 @@ public class MapperTest {
                 (vo) -> {
                     Person p = Mapper.parseObject(vo, Person.class);
 
-                    assertThat(vo.getId()).isEqualTo(p.getId());
+                    assertThat(vo.getKey()).isEqualTo(p.getId());
                     assertThat(vo.getFirstName()).isEqualTo(p.getFirstName());
                     assertThat(vo.getLastName()).isEqualTo(p.getLastName());
                     assertThat(vo.getAddress()).isEqualTo(p.getAddress());
