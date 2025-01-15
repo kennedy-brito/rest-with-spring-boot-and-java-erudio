@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//@CrossOrigin
 @RequestMapping("/api/person/v1")
 @RestController
 @Tag(name = "People", description = "Endpoints for Managing People")
@@ -23,6 +24,7 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
+    @CrossOrigin("http://localhost:8080")
     @GetMapping(
             value = "/{id}",
             produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML}
@@ -68,6 +70,7 @@ public class PersonController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content),
             }
     )
+    @CrossOrigin({})
     public PersonVO create(@RequestBody PersonVO person) {
         return personService.create(person);
     }
