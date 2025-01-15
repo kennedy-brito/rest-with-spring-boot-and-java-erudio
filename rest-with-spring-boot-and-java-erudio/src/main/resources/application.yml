@@ -6,6 +6,8 @@ spring:
     url: jdbc:mysql://localhost:3307/rest-with-spring-boot-and-java-erudio?useTimezone=true&serverTimezone=UTC
     username: root
     password: 19357
+  flyway:
+    enabled: true
   jpa:
     open-in-view: false
     hibernate:

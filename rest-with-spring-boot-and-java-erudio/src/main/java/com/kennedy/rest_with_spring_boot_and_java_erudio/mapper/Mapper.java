@@ -1,7 +1,9 @@
 package com.kennedy.rest_with_spring_boot_and_java_erudio.mapper;
 
 
+import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.BookVO;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.PersonVO;
+import com.kennedy.rest_with_spring_boot_and_java_erudio.model.Book;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.model.Person;
 import org.modelmapper.ModelMapper;
 
@@ -22,6 +24,14 @@ public class Mapper {
         mapper
                 .createTypeMap(PersonVO.class, Person.class)
                 .addMapping(PersonVO::getKey, Person::setId);
+
+        mapper
+                .createTypeMap(Book.class, BookVO.class)
+                .addMapping(Book::getId, BookVO::setKey);
+
+        mapper
+                .createTypeMap(BookVO.class, Book.class)
+                .addMapping(BookVO::getKey, Book::setId);
     }
 
     public static <O, D> D parseObject(O origin, Class<D> destination){

@@ -26,7 +26,7 @@ public class PersonConstants {
         List<PersonVO> list = new ArrayList<>();
 
         for (int i = 0; i < 10; i++){
-            PersonVO person = new PersonVO(Long.valueOf(i), "name " + i, "last name " + i, "address " + i, "male");
+            PersonVO person = new PersonVO((long) i, "name " + i, "last name " + i, "address " + i, "male");
             list.add(person);
         }
 
