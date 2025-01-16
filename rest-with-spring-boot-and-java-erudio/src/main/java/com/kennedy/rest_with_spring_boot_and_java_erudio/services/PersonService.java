@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -97,6 +98,24 @@ public class PersonService {
         );
 
         return persons;
+    }
+
+    @Transactional
+    public PersonVO disablePerson(Long id){
+
+        logger.info("Disabling one person!");
+
+        personRepository.disablePerson(id);
+
+        Person entity = personRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("No records found for this ID!")
+        );
+
+        PersonVO vo = Mapper.parseObject(entity, PersonVO.class);
+
+        vo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+
+        return vo;
     }
 
 }

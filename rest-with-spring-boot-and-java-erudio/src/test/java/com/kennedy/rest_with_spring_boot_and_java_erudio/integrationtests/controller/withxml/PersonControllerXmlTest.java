@@ -1,10 +1,11 @@
-package com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.controller.withjson;
+package com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.controller.withxml;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.configs.TestConfigs;
-import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.security.AccountCredentialsVO;
+import com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.vo.security.AccountCredentialsVO;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.vo.PersonVO;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.vo.security.TokenVO;
@@ -13,20 +14,18 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
-import org.apache.http.client.methods.HttpHead;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 
-import static com.kennedy.rest_with_spring_boot_and_java_erudio.commons.PersonConstants.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.kennedy.rest_with_spring_boot_and_java_erudio.commons.PersonConstants.p1;
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(
 		webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
 		properties = {"spring.profiles.active=test"})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class PersonControllerJsonTest extends AbstractIntegrationTest {
+public class PersonControllerXmlTest extends AbstractIntegrationTest {
 
 	private static RequestSpecification specification;
 	private static ObjectMapper objectMapper;
@@ -35,7 +34,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
     @BeforeAll
 	public static void setUp(){
-		objectMapper = new ObjectMapper();
+		objectMapper = new XmlMapper();
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
 		person = new PersonVO();
@@ -49,7 +48,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
         String accessToken = given()
                 .basePath("/auth/signin")
                 .port(TestConfigs.SERVER_PORT)
-                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .contentType(TestConfigs.CONTENT_TYPE_XML)
                 .body(user)
                 .when()
                 .post()
@@ -62,6 +61,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		specification = new RequestSpecBuilder()
 				.addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, TestConfigs.BEARER_TOKEN + accessToken)
+				.addHeader(TestConfigs.HEADER_PARAM_ACCEPT, TestConfigs.CONTENT_TYPE_XML)
+				.addHeader(TestConfigs.HEADER_PARAM_CONTENT_TYPE, TestConfigs.CONTENT_TYPE_XML)
 				.setBasePath("/api/person/v1")
 				.setPort(TestConfigs.SERVER_PORT)
 				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
@@ -77,7 +78,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		var content = given()
 				.spec(specification)
 				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
 					.body(person)
 					.when()
 					.post()
@@ -112,7 +113,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		mockPerson(person);
 
 		var content = given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
 				.header(TestConfigs.HEADER_PARAM_ORIGIN,TestConfigs.ORIGIN_SEMERU)
 				.body(person)
 				.when()
@@ -135,7 +136,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		var content = given().spec(specification)
 				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
 					.pathParam("id", person.getId())
 					.when()
 					.get("{id}")
@@ -170,7 +171,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		mockPerson(person);
 
 		var content = given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
 				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
 				.pathParam("id", person.getId())
 				.when()
@@ -191,6 +192,5 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		person.setLastName(p1.getLastName());
 		person.setAddress(p1.getAddress());
 		person.setGender(p1.getGender());
-		person.setEnabled(p1.getEnabled());
 	}
 }

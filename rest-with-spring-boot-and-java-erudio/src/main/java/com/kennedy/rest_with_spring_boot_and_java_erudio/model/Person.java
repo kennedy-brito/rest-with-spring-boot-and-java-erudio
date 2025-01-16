@@ -21,16 +21,18 @@ public class Person implements Serializable {
     private String address;
     @Column(nullable = false, length = 6)
     private String gender;
-
+    @Column(nullable = false)
+    private Boolean enabled;
     public Person() {
     }
 
-    public Person(Long id, String firstName, String lastName, String address, String gender) {
+    public Person(Long id, String firstName, String lastName, String address, String gender, Boolean enabled) {
         this.address = address;
         this.firstName = firstName;
         this.gender = gender;
         this.id = id;
         this.lastName = lastName;
+        this.enabled = enabled;
     }
 
 
@@ -74,14 +76,22 @@ public class Person implements Serializable {
         this.lastName = lastName;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Person person)) return false;
-        return Objects.equals(id, person.id) && Objects.equals(getFirstName(), person.getFirstName()) && Objects.equals(getLastName(), person.getLastName()) && Objects.equals(getAddress(), person.getAddress()) && Objects.equals(getGender(), person.getGender());
+        return Objects.equals(id, person.id) && Objects.equals(getFirstName(), person.getFirstName()) && Objects.equals(getLastName(), person.getLastName()) && Objects.equals(getAddress(), person.getAddress()) && Objects.equals(getGender(), person.getGender()) && Objects.equals(getEnabled(), person.getEnabled());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, getFirstName(), getLastName(), getAddress(), getGender());
+        return Objects.hash(id, getFirstName(), getLastName(), getAddress(), getGender(), getEnabled());
     }
 }

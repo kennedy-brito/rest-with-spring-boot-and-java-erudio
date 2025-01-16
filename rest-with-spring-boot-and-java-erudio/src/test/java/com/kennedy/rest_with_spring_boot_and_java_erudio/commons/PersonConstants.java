@@ -8,14 +8,14 @@ import java.util.List;
 
 public class PersonConstants {
 
-    public static Person p1 = new Person(1L, "first name", "last name", "address", "male");
-    public static PersonVO vo1 = new PersonVO(1L, "first name", "last name", "address", "male");
+    public static Person p1 = new Person(1L, "first name", "last name", "address", "male", true);
+    public static PersonVO vo1 = new PersonVO(1L, "first name", "last name", "address", "male", true);
 
     public static List<Person> getPersonList(){
         List<Person> list = new ArrayList<>();
 
         for (int i = 0; i < 10; i++){
-            Person person = new Person((long) i, "name " + i, "last name " + i, "address " + i, "male");
+            Person person = new Person((long) i, "name " + i, "last name " + i, "address " + i, "male", true);
             list.add(person);
         }
 
@@ -26,7 +26,7 @@ public class PersonConstants {
         List<PersonVO> list = new ArrayList<>();
 
         for (int i = 0; i < 10; i++){
-            PersonVO person = new PersonVO((long) i, "name " + i, "last name " + i, "address " + i, "male");
+            PersonVO person = new PersonVO((long) i, "name " + i, "last name " + i, "address " + i, "male", true);
             list.add(person);
         }
 

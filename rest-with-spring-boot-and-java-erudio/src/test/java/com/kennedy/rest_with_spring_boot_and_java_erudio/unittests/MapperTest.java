@@ -1,6 +1,7 @@
 package com.kennedy.rest_with_spring_boot_and_java_erudio.unittests;
 
 import static com.kennedy.rest_with_spring_boot_and_java_erudio.commons.PersonConstants.*;
+import static com.kennedy.rest_with_spring_boot_and_java_erudio.commons.PersonConstants.p1;
 import static org.assertj.core.api.Assertions.*;
 
 import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.PersonVO;
@@ -20,6 +21,7 @@ public class MapperTest {
         assertThat(vo.getLastName()).isEqualTo(p1.getLastName());
         assertThat(vo.getAddress()).isEqualTo(p1.getAddress());
         assertThat(vo.getGender()).isEqualTo(p1.getGender());
+        assertThat(vo.getEnabled()).isEqualTo(p1.getEnabled());
     }
 
     @Test
@@ -32,6 +34,7 @@ public class MapperTest {
         assertThat(vo1.getLastName()).isEqualTo(p1.getLastName());
         assertThat(vo1.getAddress()).isEqualTo(p1.getAddress());
         assertThat(vo1.getGender()).isEqualTo(p1.getGender());
+        assertThat(vo1.getEnabled()).isEqualTo(p1.getEnabled());
     }
 
     @Test
@@ -46,6 +49,7 @@ public class MapperTest {
                     assertThat(vo.getLastName()).isEqualTo(p.getLastName());
                     assertThat(vo.getAddress()).isEqualTo(p.getAddress());
                     assertThat(vo.getGender()).isEqualTo(p.getGender());
+                    assertThat(vo.getEnabled()).isEqualTo(p.getEnabled());
                 }
         );
     }
@@ -61,6 +65,7 @@ public class MapperTest {
                     assertThat(vo.getLastName()).isEqualTo(p.getLastName());
                     assertThat(vo.getAddress()).isEqualTo(p.getAddress());
                     assertThat(vo.getGender()).isEqualTo(p.getGender());
+                    assertThat(vo.getEnabled()).isEqualTo(p.getEnabled());
                 }
         );
     }

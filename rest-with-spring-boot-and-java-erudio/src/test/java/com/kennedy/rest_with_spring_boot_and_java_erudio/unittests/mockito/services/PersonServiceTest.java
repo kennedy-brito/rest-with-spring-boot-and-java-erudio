@@ -53,6 +53,7 @@ public class PersonServiceTest {
         assertThat(result.getFirstName()).isEqualTo(p1.getFirstName());
         assertThat(result.getLastName()).isEqualTo(p1.getLastName());
         assertThat(result.getGender()).isEqualTo(p1.getGender());
+        assertThat(result.getEnabled()).isEqualTo(p1.getEnabled());
     }
 
     @Test
@@ -69,6 +70,7 @@ public class PersonServiceTest {
         assertThat(result.getFirstName()).isEqualTo(p1.getFirstName());
         assertThat(result.getLastName()).isEqualTo(p1.getLastName());
         assertThat(result.getGender()).isEqualTo(p1.getGender());
+        assertThat(result.getEnabled()).isEqualTo(p1.getEnabled());
     }
 
     @Test
@@ -95,6 +97,7 @@ public class PersonServiceTest {
         assertThat(result.getFirstName()).isEqualTo(p1.getFirstName());
         assertThat(result.getLastName()).isEqualTo(p1.getLastName());
         assertThat(result.getGender()).isEqualTo(p1.getGender());
+        assertThat(result.getEnabled()).isEqualTo(p1.getEnabled());
     }
 
     @Test
@@ -137,6 +140,7 @@ public class PersonServiceTest {
         assertThat(vo.getFirstName()).isEqualTo(p.getFirstName());
         assertThat(vo.getLastName()).isEqualTo(p.getLastName());
         assertThat(vo.getGender()).isEqualTo(p.getGender());
+        assertThat(vo.getEnabled()).isEqualTo(p.getEnabled());
 
         vo = vos.get(3);
         p = list.get(3);
@@ -149,6 +153,7 @@ public class PersonServiceTest {
         assertThat(vo.getFirstName()).isEqualTo(p.getFirstName());
         assertThat(vo.getLastName()).isEqualTo(p.getLastName());
         assertThat(vo.getGender()).isEqualTo(p.getGender());
+        assertThat(vo.getEnabled()).isEqualTo(p.getEnabled());
 
         vo = vos.get(7);
         p = list.get(7);
@@ -161,6 +166,7 @@ public class PersonServiceTest {
         assertThat(vo.getFirstName()).isEqualTo(p.getFirstName());
         assertThat(vo.getLastName()).isEqualTo(p.getLastName());
         assertThat(vo.getGender()).isEqualTo(p.getGender());
+        assertThat(vo.getEnabled()).isEqualTo(p.getEnabled());
 
 
     }
