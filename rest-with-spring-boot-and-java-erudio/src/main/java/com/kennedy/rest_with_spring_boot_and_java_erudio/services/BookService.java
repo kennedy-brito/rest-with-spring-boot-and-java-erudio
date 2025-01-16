@@ -1,6 +1,6 @@
 package com.kennedy.rest_with_spring_boot_and_java_erudio.services;
 
-import com.kennedy.rest_with_spring_boot_and_java_erudio.BookController;
+import com.kennedy.rest_with_spring_boot_and_java_erudio.controllers.BookController;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.BookVO;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.exceptions.RequiredObjectIsNullException;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.exceptions.ResourceNotFoundException;

@@ -1,5 +1,5 @@
 package com.kennedy.rest_with_spring_boot_and_java_erudio.services;
-import com.kennedy.rest_with_spring_boot_and_java_erudio.PersonController;
+import com.kennedy.rest_with_spring_boot_and_java_erudio.controllers.PersonController;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.PersonVO;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.exceptions.RequiredObjectIsNullException;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.exceptions.ResourceNotFoundException;
