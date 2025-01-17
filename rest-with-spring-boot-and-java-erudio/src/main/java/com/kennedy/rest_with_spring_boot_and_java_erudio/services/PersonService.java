@@ -94,6 +94,7 @@ public class PersonService {
         return vo;
     }
 
+    public List<PersonVO> findAll(){return null;}
     public PagedModel<EntityModel<PersonVO>> findAll(Pageable pageable){
 
         logger.info("Finding all people!");
@@ -134,6 +135,31 @@ public class PersonService {
         vo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
 
         return vo;
+    }
+
+    public PagedModel<EntityModel<PersonVO>> findPersonsByName(String firstName, Pageable pageable){
+
+        logger.info("Finding people by first name!");
+
+        Page<Person> personPage = personRepository.findPersonsByName(firstName, pageable);
+
+        Page<PersonVO> personVosPage = personPage.map(p-> {
+            PersonVO vo = Mapper.parseObject(p, PersonVO.class);
+            vo.add(
+                    linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
+            return vo;
+        });
+
+        Link link =
+                linkTo(
+                        methodOn(PersonController.class)
+                                .findPeopleByFirstName(
+                                        firstName,
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        "asc")).withSelfRel();
+
+        return assembler.toModel(personVosPage, link);
     }
 
 }

@@ -86,6 +86,7 @@ public class BookService {
 
         repository.delete(entity);
     }
+    public List<BookVO> findAll(){return null;}
 
     public PagedModel<EntityModel<BookVO>> findAll(Pageable pageable) {
         Page<Book> books = repository.findAll(pageable);

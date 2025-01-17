@@ -2,12 +2,14 @@ package com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.contr
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.configs.TestConfigs;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.security.AccountCredentialsVO;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.vo.PersonVO;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.vo.security.TokenVO;
+import com.kennedy.rest_with_spring_boot_and_java_erudio.integrationtests.vo.wrappers.WrapperPersonVO;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -185,6 +187,61 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		assertThat(content).isNotNull();
 		assertThat(content).isEqualTo(TestConfigs.INVALID_CORS_MESSAGE);
 	}
+
+	@Test
+	@Order(6)
+	public void testFindAll() throws JsonMappingException, JsonProcessingException {
+
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.accept(TestConfigs.CONTENT_TYPE_JSON)
+				.queryParams("page", 3, "size", 10, "direction", "asc")
+				.when()
+				.get()
+				.then()
+				.statusCode(200)
+				.extract()
+				.body()
+				.asString();
+
+		WrapperPersonVO wrapper = objectMapper.readValue(content, WrapperPersonVO.class);
+		var people = wrapper.getEmbedded().getPersons();
+
+		PersonVO foundPersonOne = people.get(0);
+
+		assertThat(foundPersonOne.getId()).isNotNull();
+		assertThat(foundPersonOne.getFirstName()).isNotNull();
+		assertThat(foundPersonOne.getLastName()).isNotNull();
+		assertThat(foundPersonOne.getAddress()).isNotNull();
+		assertThat(foundPersonOne.getGender()).isNotNull();
+
+		assertThat(foundPersonOne.getEnabled()).isNotNull();
+
+		assertThat(foundPersonOne.getId()).isEqualTo(677);
+
+		assertThat(foundPersonOne.getFirstName()).isEqualTo("Alic");
+		assertThat(foundPersonOne.getLastName()).isEqualTo("Terbrug");
+		assertThat(foundPersonOne.getAddress()).isEqualTo("3 Eagle Crest Court");
+		assertThat(foundPersonOne.getGender()).isEqualTo("Male");
+
+		PersonVO foundPersonSix = people.get(5);
+
+		assertThat(foundPersonSix.getId()).isNotNull();
+		assertThat(foundPersonSix.getFirstName()).isNotNull();
+		assertThat(foundPersonSix.getLastName()).isNotNull();
+		assertThat(foundPersonSix.getAddress()).isNotNull();
+		assertThat(foundPersonSix.getGender()).isNotNull();
+
+		assertThat(foundPersonSix.getEnabled()).isTrue();
+
+		assertThat(foundPersonSix.getId()).isEqualTo(911);
+
+		assertThat(foundPersonSix.getFirstName()).isEqualTo("Allegra");
+		assertThat(foundPersonSix.getLastName()).isEqualTo("Dome");
+		assertThat(foundPersonSix.getAddress()).isEqualTo("57 Roxbury Pass");
+		assertThat(foundPersonSix.getGender()).isEqualTo("Female");
+	}
+
 
 	private void mockPerson(PersonVO person) {
 		person.setFirstName(p1.getFirstName());

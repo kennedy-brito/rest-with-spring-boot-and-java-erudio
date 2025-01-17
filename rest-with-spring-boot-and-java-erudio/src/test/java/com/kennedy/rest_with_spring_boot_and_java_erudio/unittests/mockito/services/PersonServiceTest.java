@@ -124,7 +124,7 @@ public class PersonServiceTest {
 
         when(repository.findAll()).thenReturn(list);
 
-        List<PersonVO> vos = personService.findAll(pageable);
+        List<PersonVO> vos = personService.findAll();
         assertThat(vos.size()).isEqualTo(10);
 
         PersonVO vo = vos.get(0);
