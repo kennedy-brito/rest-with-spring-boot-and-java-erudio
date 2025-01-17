@@ -2,6 +2,7 @@ package com.kennedy.rest_with_spring_boot_and_java_erudio.services;
 
 import com.kennedy.rest_with_spring_boot_and_java_erudio.controllers.BookController;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.BookVO;
+import com.kennedy.rest_with_spring_boot_and_java_erudio.data.vo.v1.PersonVO;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.exceptions.RequiredObjectIsNullException;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.exceptions.ResourceNotFoundException;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.mapper.Mapper;
@@ -12,6 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +32,8 @@ public class BookService {
     @Autowired
     private BookRepository repository;
 
+    @Autowired
+    private PagedResourcesAssembler<BookVO> assembler;
     public BookVO create(BookVO entity){
         if (entity == null) throw new RequiredObjectIsNullException();
 
@@ -80,7 +87,7 @@ public class BookService {
         repository.delete(entity);
     }
 
-    public Page<BookVO> findAll(Pageable pageable) {
+    public PagedModel<EntityModel<BookVO>> findAll(Pageable pageable) {
         Page<Book> books = repository.findAll(pageable);
 
         Page<BookVO> vos = books.map(b ->{
@@ -91,6 +98,14 @@ public class BookService {
             return vo;
         });
 
-        return vos;
+
+        Link link = linkTo(
+                methodOn(BookController.class)
+                        .findAll(
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                "asc")).withSelfRel();
+
+        return assembler.toModel(vos, link);
     }
 }
