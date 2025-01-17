@@ -10,6 +10,8 @@ import com.kennedy.rest_with_spring_boot_and_java_erudio.repositories.BookReposi
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -78,17 +80,17 @@ public class BookService {
         repository.delete(entity);
     }
 
-    public List<BookVO> findAll() {
-        List<Book> books = repository.findAll();
-        List<BookVO> vos = new ArrayList<>();
+    public Page<BookVO> findAll(Pageable pageable) {
+        Page<Book> books = repository.findAll(pageable);
 
-        books.forEach((b)-> {
+        Page<BookVO> vos = books.map(b ->{
             BookVO vo = Mapper.parseObject(b, BookVO.class);
 
             vo.add(linkTo(methodOn(BookController.class).findById(vo.getKey())).withSelfRel());
 
-            vos.add(vo);
+            return vo;
         });
+
         return vos;
     }
 }
