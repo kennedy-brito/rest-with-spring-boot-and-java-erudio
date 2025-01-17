@@ -9,6 +9,12 @@ import com.kennedy.rest_with_spring_boot_and_java_erudio.repositories.PersonRepo
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +31,8 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
+    @Autowired
+    PagedResourcesAssembler<PersonVO> assembler;
     public PersonVO create(PersonVO person){
 
         if (person == null) throw new RequiredObjectIsNullException();
@@ -86,18 +94,28 @@ public class PersonService {
         return vo;
     }
 
-    public List<PersonVO> findAll(){
+    public PagedModel<EntityModel<PersonVO>> findAll(Pageable pageable){
 
         logger.info("Finding all people!");
 
-        List<PersonVO> persons = Mapper.parseListObjects(personRepository.findAll(), PersonVO.class);
+        Page<Person> personPage = personRepository.findAll(pageable);
 
-        persons.stream().forEach((p) ->
-                p.add(
-                        linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel())
-        );
+        Page<PersonVO> personVosPage = personPage.map(p-> {
+            PersonVO vo = Mapper.parseObject(p, PersonVO.class);
+            vo.add(
+                    linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
+            return vo;
+        });
 
-        return persons;
+        Link link =
+                linkTo(
+                        methodOn(PersonController.class)
+                                .findAll(
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize(),
+                                        "asc")).withSelfRel();
+
+        return assembler.toModel(personVosPage, link);
     }
 
     @Transactional

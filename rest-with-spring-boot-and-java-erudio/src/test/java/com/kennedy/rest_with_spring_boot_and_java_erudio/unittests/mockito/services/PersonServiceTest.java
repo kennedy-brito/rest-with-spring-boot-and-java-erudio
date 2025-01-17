@@ -6,14 +6,12 @@ import com.kennedy.rest_with_spring_boot_and_java_erudio.exceptions.RequiredObje
 import com.kennedy.rest_with_spring_boot_and_java_erudio.model.Person;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.repositories.PersonRepository;
 import com.kennedy.rest_with_spring_boot_and_java_erudio.services.PersonService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -126,7 +124,7 @@ public class PersonServiceTest {
 
         when(repository.findAll()).thenReturn(list);
 
-        List<PersonVO> vos = personService.findAll();
+        List<PersonVO> vos = personService.findAll(pageable);
         assertThat(vos.size()).isEqualTo(10);
 
         PersonVO vo = vos.get(0);
